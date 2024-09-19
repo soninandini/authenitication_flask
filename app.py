@@ -1,12 +1,12 @@
 
-
+import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
 
 from routes import app as routes_app
-from models import db  # Importing db from models
+from models import db  
 
 migrate = Migrate()
 
@@ -29,4 +29,6 @@ def create_app():
 
 if __name__ == "__main__":
     app = create_app()
-    app.run(debug=True)
+    # app.run(debug=True)
+    port = int(os.environ.get("PORT", 5001)) 
+    app.run(host='0.0.0.0', port=port, debug=True)
