@@ -8,6 +8,7 @@ import re
 app = Blueprint('routes', __name__)
 
 EMAIL_REGEX = r'^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+$'
+PASSWORD_REGEX = r'^(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$'
 
 @app.route('/user/signup', methods=['POST'])
 def signup():
@@ -23,6 +24,12 @@ def signup():
 
     if not email or not re.match(EMAIL_REGEX, email):
         return jsonify({"message": "Email is not valid", "data": {}}), 400
+    
+    if not password or not re.match(PASSWORD_REGEX, password):
+        return jsonify({
+            "message": "Password must be at least 8 characters long, include at least one uppercase letter, and one special character",
+            "data": {}
+        }), 400
 
     if not password:
         return jsonify({"message": "Password cannot be left blank", "data": {}}), 400
